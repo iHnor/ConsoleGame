@@ -1,0 +1,16 @@
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp.deps.json
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp.runtimeconfig.json
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp.runtimeconfig.dev.json
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp.dll
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/ref/Tcp.dll
+/home/intern/projects/Console game/Tcp/bin/Debug/net5.0/Tcp.pdb
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.csproj.AssemblyReference.cache
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.GeneratedMSBuildEditorConfig.editorconfig
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.AssemblyInfoInputs.cache
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.AssemblyInfo.cs
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.csproj.CoreCompileInputs.cache
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.dll
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/ref/Tcp.dll
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.pdb
+/home/intern/projects/Console game/Tcp/obj/Debug/net5.0/Tcp.genruntimeconfig.cache
