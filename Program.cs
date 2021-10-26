@@ -9,11 +9,16 @@ namespace Tcp
 {
     class newGame
     {
-
+        List<newClient> clients = new List<newClient>();
+        public newGame(List<newClient> clients){
+            this.clients = clients;    
+        }
         private Game StartGame = new Game();
         private PrintGameField PrintField = new PrintGameField();
         private int whosStep = 0;
         private bool change;
+        private bool isPlaying = true;
+        public bool gatIsPlaying() { return isPlaying; }
         public newClient changePlayer(List<newClient> clients)
         {
             if (change)
@@ -30,28 +35,32 @@ namespace Tcp
         public bool Start(int[] steps)
         {
             bool resultOfStep;
+
+            if (whosStep % 2 == 0)
+            {
+                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'x');
+                if (resultOfStep) whosStep++;
+            }
+            else
+            {
+                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'o');
+                if (resultOfStep) whosStep++;
+            }
+
             char testwin = StartGame.isWin();
             if (testwin == ' ')
             {
-                if (whosStep % 2 == 0)
-                {
-                    resultOfStep = StartGame.DoStep(steps[0], steps[1], 'x');
-                }
-                else
-                {
-                    resultOfStep = StartGame.DoStep(steps[0], steps[1], 'o');
-                }
-                if(resultOfStep) whosStep++;  
-
-                PrintField.ShowTheField(StartGame.field);   
+                PrintField.ShowTheField(StartGame.field, clients);
                 return resultOfStep;
             }
             else
             {
+                PrintField.ShowTheField(StartGame.field, clients);
                 PrintField.PrintWiner(testwin);
+                isPlaying = false;
                 return false;
             }
-            
+
         }
 
 
@@ -151,9 +160,14 @@ namespace Tcp
 
     class PrintGameField
     {
-        public void ShowTheField(char[,] field)
+        public void ShowTheField(char[,] field, List<newClient> clients)
         {
             string show = transformField(field);
+            foreach (var client in clients)
+            {
+                client.writer.WriteLine(show);
+                client.writer.Flush();
+            }
             Console.WriteLine(show);
         }
 
@@ -181,7 +195,7 @@ namespace Tcp
 
 
     class newClient
-    {
+    {   
         public TcpClient client;
         public NetworkStream stream;
         public StreamReader reader;
@@ -221,21 +235,32 @@ namespace Tcp
                     data = null;
                     if (clients.Count == 2)
                     {
-                        newGame game = new newGame();
+                        newGame game = new newGame(clients);
                         newClient client = game.changePlayer(clients);
                         while (true)
                         {
                             data = client.reader.ReadLine();
-                            Console.WriteLine("Received: {0}", data);
-                            System.Console.WriteLine(Int32.Parse(data[0].ToString()));
-                            System.Console.WriteLine(Int32.Parse(data[2].ToString()));
+                            // Console.WriteLine("Received: {0}", data);
+                            // System.Console.WriteLine(Int32.Parse(data[0].ToString()));
+                            // System.Console.WriteLine(Int32.Parse(data[2].ToString()));
 
                             int[] response = Array.ConvertAll(data.Split(' '), Convert.ToInt32);
 
                             bool resultStep = game.Start(response);
 
-                            if(resultStep)
-                                client = game.changePlayer(clients);
+                            if (game.gatIsPlaying())
+                            {
+                                if (resultStep)
+                                    client = game.changePlayer(clients);
+                            }
+                            else
+                                foreach (var c in clients)
+                                {
+                                    c.writer.WriteLine("Game over");
+                                    c.writer.Flush();
+                                    c.client.Close();
+                                }
+
                         }
                     }
                 }
