@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj": {}
+    "/home/intern/projects/ConsoleGame/Tcp.csproj": {}
   },
   "projects": {
-    "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj": {
+    "/home/intern/projects/ConsoleGame/Tcp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj",
+        "projectUniqueName": "/home/intern/projects/ConsoleGame/Tcp.csproj",
         "projectName": "Tcp",
-        "projectPath": "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj",
-        "packagesPath": "/home/bookadmin/.nuget/packages/",
-        "outputPath": "/home/bookadmin/projects/InCamp22/ConsoleGame/obj/",
+        "projectPath": "/home/intern/projects/ConsoleGame/Tcp.csproj",
+        "packagesPath": "/home/intern/.nuget/packages/",
+        "outputPath": "/home/intern/projects/ConsoleGame/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/bookadmin/.nuget/NuGet/NuGet.Config"
+          "/home/intern/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

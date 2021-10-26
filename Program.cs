@@ -7,49 +7,55 @@ using System.Collections.Generic;
 
 namespace Tcp
 {
-    class newGame {
+    class newGame
+    {
 
         private Game StartGame = new Game();
         private PrintGameField PrintField = new PrintGameField();
         private int whosStep = 0;
-        private  bool change;
-        public newClient changePlayer(List<newClient> clients){
-            if(change){
-                change = !change;    
+        private bool change;
+        public newClient changePlayer(List<newClient> clients)
+        {
+            if (change)
+            {
+                change = !change;
+                return clients[1];
+            }
+            else
+            {
+                change = !change;
                 return clients[0];
             }
-            else{
-                change = !change;    
-                return clients[1];   
-            } 
         }
-        public void Start(int[] steps)
+        public bool Start(int[] steps)
         {
             //int[,] steps = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 2 }, { 2, 2 } };
 
             //int i = 0;    
-            PrintField.ShowTheField(StartGame.field);
+            // PrintField.ShowTheField(StartGame.field);
             //for (int i = 0; i < steps.GetUpperBound(0) + 2; i++)
             //{
-                char testwin = StartGame.isWin();
-                if (testwin == ' ')
+            char testwin = StartGame.isWin();
+            if (testwin == ' ')
+            {
+                if (whosStep % 2 == 0)
                 {
-                    if (whosStep % 2 == 0)
-                    {
-                        StartGame.field = StartGame.DoStep(steps[0], steps[1], 'x');
-                    }
-                    else
-                    {
-                        StartGame.field = StartGame.DoStep(steps[0], steps[1], 'o');
-                    }
-                    PrintField.ShowTheField(StartGame.field);
+                    StartGame.DoStep(steps[0], steps[1], 'x');
                 }
                 else
                 {
-                    PrintField.PrintWiner(testwin);
+                    StartGame.field = StartGame.DoStep(steps[0], steps[1], 'o');
                 }
-            //}
-            whosStep++;
+                PrintField.ShowTheField(StartGame.field);
+                whosStep++;     
+                return true;
+            }
+            else
+            {
+                PrintField.PrintWiner(testwin);
+                return false;
+            }
+            
         }
 
 
@@ -215,32 +221,26 @@ namespace Tcp
                     newClient tmp = new newClient(server.AcceptTcpClient());
                     clients.Add(tmp);
                     Console.WriteLine("Connected!");
-                   // System.Console.WriteLine(clients.Count);
+                    // System.Console.WriteLine(clients.Count);
 
                     data = null;
                     if (clients.Count == 2)
                     {
                         newGame game = new newGame();
+                        newClient client = game.changePlayer(clients);
                         while (true)
                         {
-                            //foreach (var client in clients)
-                            //{
-                                newClient client = game.changePlayer(clients); 
-                                data = client.reader.ReadLine();
-                                Console.WriteLine("Received: {0}", data);
-                                System.Console.WriteLine(Int32.Parse(data[0].ToString()));
-                                System.Console.WriteLine(Int32.Parse(data[2].ToString()));
+                            data = client.reader.ReadLine();
+                            Console.WriteLine("Received: {0}", data);
+                            System.Console.WriteLine(Int32.Parse(data[0].ToString()));
+                            System.Console.WriteLine(Int32.Parse(data[2].ToString()));
 
-                                int[] response = Array.ConvertAll(data.Split(' '), Convert.ToInt32);
+                            int[] response = Array.ConvertAll(data.Split(' '), Convert.ToInt32);
 
-                                game.Start(response);
-                                //if ()
-                                //string response = data.ToUpper();
-                                //client.writer.WriteLine(response);
-                                //client.writer.Flush();
-                                //Console.WriteLine("Sent: {0}", response);
-                            //}
+                            bool resultStep = game.Start(response);
 
+                            if(!resultStep)
+                                client = game.changePlayer(clients);
                         }
                     }
                 }
