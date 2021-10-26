@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EntaZlgDPAnnYljglmfq12Ts3v/KPyGfPppWD2wL3a6yhdkka1np5z5RxqgkvvoveBWXqV1f0v1xDLWv/18oiA==",
+  "dgSpecHash": "2FzOE6VQDHEYXZu/8rxPReRQEBDaaNHDTT16Q25QVESMdPU1WUJqZQW2nfQDc4OzhtNMhNyiSIuOJ6WmknqP9Q==",
   "success": true,
-  "projectFilePath": "/home/intern/projects/Console game/Tcp/Tcp.csproj",
+  "projectFilePath": "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

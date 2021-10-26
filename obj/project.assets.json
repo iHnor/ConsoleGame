@@ -8,19 +8,19 @@
     "net5.0": []
   },
   "packageFolders": {
-    "/home/intern/.nuget/packages/": {}
+    "/home/bookadmin/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/intern/projects/Console game/Tcp/Tcp.csproj",
+      "projectUniqueName": "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj",
       "projectName": "Tcp",
-      "projectPath": "/home/intern/projects/Console game/Tcp/Tcp.csproj",
-      "packagesPath": "/home/intern/.nuget/packages/",
-      "outputPath": "/home/intern/projects/Console game/Tcp/obj/",
+      "projectPath": "/home/bookadmin/projects/InCamp22/ConsoleGame/Tcp.csproj",
+      "packagesPath": "/home/bookadmin/.nuget/packages/",
+      "outputPath": "/home/bookadmin/projects/InCamp22/ConsoleGame/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/intern/.nuget/NuGet/NuGet.Config"
+        "/home/bookadmin/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
