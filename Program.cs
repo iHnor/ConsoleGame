@@ -29,26 +29,22 @@ namespace Tcp
         }
         public bool Start(int[] steps)
         {
-            //int[,] steps = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 2 }, { 2, 2 } };
-
-            //int i = 0;    
-            // PrintField.ShowTheField(StartGame.field);
-            //for (int i = 0; i < steps.GetUpperBound(0) + 2; i++)
-            //{
+            bool resultOfStep;
             char testwin = StartGame.isWin();
             if (testwin == ' ')
             {
                 if (whosStep % 2 == 0)
                 {
-                    StartGame.DoStep(steps[0], steps[1], 'x');
+                    resultOfStep = StartGame.DoStep(steps[0], steps[1], 'x');
                 }
                 else
                 {
-                    StartGame.field = StartGame.DoStep(steps[0], steps[1], 'o');
+                    resultOfStep = StartGame.DoStep(steps[0], steps[1], 'o');
                 }
-                PrintField.ShowTheField(StartGame.field);
-                whosStep++;     
-                return true;
+                if(resultOfStep) whosStep++;  
+
+                PrintField.ShowTheField(StartGame.field);   
+                return resultOfStep;
             }
             else
             {
@@ -66,25 +62,25 @@ namespace Tcp
         public char[,] field = { { ' ', ' ', ' ' }, { ' ', ' ', ' ' }, { ' ', ' ', ' ' } };
         static private string isX = "xxx";
         static private string isO = "ooo";
-        public char[,] DoStep(int row, int col, char XorO)
+        public bool DoStep(int row, int col, char XorO)
         {
             if (XorO == 'x' || XorO == 'o')
             {
                 if (checkCell(row, col))
                 {
                     field[row, col] = XorO;
-                    return field;
+                    return true;
                 }
                 else
                 {
                     System.Console.WriteLine("Cell is not free");
-                    return field;
+                    return false;
                 }
             }
             else
             {
                 System.Console.WriteLine("Enter the right value");
-                return field;
+                return false;
             }
         }
 
@@ -218,10 +214,9 @@ namespace Tcp
                 {
                     Console.Write("Waiting for a connection... ");
 
-                    newClient tmp = new newClient(server.AcceptTcpClient());
-                    clients.Add(tmp);
+                    newClient inputClient = new newClient(server.AcceptTcpClient());
+                    clients.Add(inputClient);
                     Console.WriteLine("Connected!");
-                    // System.Console.WriteLine(clients.Count);
 
                     data = null;
                     if (clients.Count == 2)
@@ -239,7 +234,7 @@ namespace Tcp
 
                             bool resultStep = game.Start(response);
 
-                            if(!resultStep)
+                            if(resultStep)
                                 client = game.changePlayer(clients);
                         }
                     }
