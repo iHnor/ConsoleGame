@@ -10,8 +10,9 @@ namespace Tcp
     class newGame
     {
         List<newClient> clients = new List<newClient>();
-        public newGame(List<newClient> clients){
-            this.clients = clients;    
+        public newGame(List<newClient> clients)
+        {
+            this.clients = clients;
         }
         private Game StartGame = new Game();
         private PrintGameField PrintField = new PrintGameField();
@@ -32,18 +33,18 @@ namespace Tcp
                 return clients[0];
             }
         }
-        public bool Start(int[] steps)
+        public bool Start(int[] steps, newClient client)
         {
             bool resultOfStep;
 
             if (whosStep % 2 == 0)
             {
-                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'x');
+                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'x', client);
                 if (resultOfStep) whosStep++;
             }
             else
             {
-                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'o');
+                resultOfStep = StartGame.DoStep(steps[0], steps[1], 'o', client);
                 if (resultOfStep) whosStep++;
             }
 
@@ -58,6 +59,7 @@ namespace Tcp
                 PrintField.ShowTheField(StartGame.field, clients);
                 PrintField.PrintWiner(testwin);
                 isPlaying = false;
+                client.setIsWinValue();
                 return false;
             }
 
@@ -71,7 +73,7 @@ namespace Tcp
         public char[,] field = { { ' ', ' ', ' ' }, { ' ', ' ', ' ' }, { ' ', ' ', ' ' } };
         static private string isX = "xxx";
         static private string isO = "ooo";
-        public bool DoStep(int row, int col, char XorO)
+        public bool DoStep(int row, int col, char XorO, newClient client)
         {
             if (XorO == 'x' || XorO == 'o')
             {
@@ -82,13 +84,15 @@ namespace Tcp
                 }
                 else
                 {
-                    System.Console.WriteLine("Cell is not free");
+                    client.writer.WriteLine("Cell is not free");
+                    client.writer.Flush();
                     return false;
                 }
             }
             else
             {
-                System.Console.WriteLine("Enter the right value");
+                client.writer.WriteLine("Enter the right value");
+                client.writer.Flush();
                 return false;
             }
         }
@@ -195,7 +199,8 @@ namespace Tcp
 
 
     class newClient
-    {   
+    {
+        private bool isWin;
         public TcpClient client;
         public NetworkStream stream;
         public StreamReader reader;
@@ -208,7 +213,14 @@ namespace Tcp
             this.reader = new StreamReader(stream);
             this.writer = new StreamWriter(stream);
         }
-
+        public void setIsWinValue()
+        {
+            isWin = !isWin;
+        }
+        public bool getIsWin()
+        {
+            return isWin;
+        }
     }
     class Program
     {
@@ -237,16 +249,16 @@ namespace Tcp
                     {
                         newGame game = new newGame(clients);
                         newClient client = game.changePlayer(clients);
+                        clients[0].writer.WriteLine("You is X");
+                        clients[0].writer.Flush();
+                        clients[1].writer.WriteLine("You is Y");
+                        clients[1].writer.Flush();
+
                         while (true)
                         {
                             data = client.reader.ReadLine();
-                            // Console.WriteLine("Received: {0}", data);
-                            // System.Console.WriteLine(Int32.Parse(data[0].ToString()));
-                            // System.Console.WriteLine(Int32.Parse(data[2].ToString()));
-
                             int[] response = Array.ConvertAll(data.Split(' '), Convert.ToInt32);
-
-                            bool resultStep = game.Start(response);
+                            bool resultStep = game.Start(response, client);
 
                             if (game.gatIsPlaying())
                             {
@@ -256,6 +268,10 @@ namespace Tcp
                             else
                                 foreach (var c in clients)
                                 {
+                                    if (c.getIsWin())
+                                        c.writer.WriteLine("You Win!");
+                                    else
+                                        c.writer.WriteLine("You Lose");
                                     c.writer.WriteLine("Game over");
                                     c.writer.Flush();
                                     c.client.Close();
