@@ -17,21 +17,13 @@ namespace Tcp
         private Game StartGame = new Game();
         private PrintGameField PrintField = new PrintGameField();
         private int whosStep = 0;
-        private bool change;
+        private bool isFirstPlayer;
         private bool isPlaying = true;
         public bool gatIsPlaying() { return isPlaying; }
         public newClient changePlayer(List<newClient> clients)
         {
-            if (change)
-            {
-                change = !change;
-                return clients[1];
-            }
-            else
-            {
-                change = !change;
-                return clients[0];
-            }
+            isFirstPlayer = !isFirstPlayer;
+            return clients[isFirstPlayer ? 0 : 1];
         }
         public bool Start(int[] steps, newClient client)
         {
@@ -243,7 +235,7 @@ namespace Tcp
                     newClient inputClient = new newClient(server.AcceptTcpClient());
                     clients.Add(inputClient);
                     Console.WriteLine("Connected!");
-
+                
                     data = null;
                     if (clients.Count == 2)
                     {
